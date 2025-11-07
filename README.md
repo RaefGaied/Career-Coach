@@ -85,7 +85,7 @@ ai-module/
 
 ### Installation Steps
 
-\`\`\`bash
+```bash
 # Install dependencies
 pip install -r requirements.txt
 
@@ -95,7 +95,7 @@ cp .env.example .env
 
 # Start the API
 uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
-\`\`\`
+```
 
 The API will be available at:
 - Main: http://localhost:8000
@@ -111,17 +111,17 @@ The API will be available at:
 **POST** `/api/chatbot/chat`
 
 Request:
-\`\`\`json
+```json
 {
   "user_id": "user_123",
   "message": "How can I improve my CV for cabin crew positions?",
   "session_id": "session_456",
   "metadata": {}
 }
-\`\`\`
+```
 
 Response:
-\`\`\`json
+```json
 {
   "response": "For cabin crew positions, focus on...",
   "session_id": "session_456",
@@ -134,14 +134,14 @@ Response:
     "response_source": "generated"
   }
 }
-\`\`\`
+```
 
 ### Job Recommendations
 
 **POST** `/api/recommendations/jobs`
 
 Request:
-\`\`\`json
+```json
 {
   "user_profile": {
     "skills": ["safety procedures", "customer service", "multilingual"],
@@ -150,7 +150,7 @@ Request:
     "salary_range": [2000, 5000]
   }
 }
-\`\`\`
+```
 
 ### Market Analysis
 
@@ -173,7 +173,7 @@ Request:
 
 ## 🧪 Testing
 
-\`\`\`bash
+```bash
 # Run all tests
 pytest tests/ -v
 
@@ -183,7 +183,7 @@ pytest tests/test_recommendations.py -v
 
 # Run with coverage
 pytest --cov=api --cov=models tests/
-\`\`\`
+```
 
 ---
 
@@ -220,7 +220,7 @@ pytest --cov=api --cov=models tests/
 
 ### API Security
 
-\`\`\`python
+```python
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
@@ -239,7 +239,7 @@ limiter = Limiter(key_func=get_remote_address)
 async def chat_endpoint(request: ChatRequest):
     # Protected endpoint
     pass
-\`\`\`
+```
 
 ### Compliance
 
@@ -254,7 +254,7 @@ async def chat_endpoint(request: ChatRequest):
 
 ### Complete Data Pipeline
 
-\`\`\`
+```
 User Input
     ↓
 [Intent Classifier] → Detect user intention
@@ -272,7 +272,7 @@ User Input
 [API Response] → Return to frontend
     ↓
 [Context Storage] → Save conversation data
-\`\`\`
+```
 
 ### Integration with External Services
 
@@ -387,7 +387,7 @@ User Input
 
 ### API Security
 
-\`\`\`python
+```python
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
@@ -406,7 +406,7 @@ limiter = Limiter(key_func=get_remote_address)
 async def chat_endpoint(request: ChatRequest):
     # Protected endpoint
     pass
-\`\`\`
+```
 
 ### Compliance
 
@@ -461,20 +461,20 @@ async def chat_endpoint(request: ChatRequest):
 ## 🐛 Troubleshooting
 
 **Port Already in Use:**
-\`\`\`bash
+```bash
 lsof -i :8000
 kill -9 <PID>
-\`\`\`
+```
 
 **Gemini API Key Error:**
-\`\`\`bash
+```bash
 pip install google-generativeai
-\`\`\`
+```
 
 **MongoDB Connection Failed:**
-\`\`\`bash
+```bash
 sudo systemctl start mongod
-\`\`\`
+```
 
 ---
 
