@@ -27,7 +27,7 @@ The AI Module powers **SkyHire's** intelligent career matching and coaching syst
 
 ## 🏗️ AI Module Architecture
 
-\`\`\`
+```
 ai-module/
 ├── data/
 │   ├── raw_jobs.csv              # Raw job data from SkyHire
@@ -71,7 +71,7 @@ ai-module/
     ├── test_chatbot_api.py       # Chatbot integration tests
     ├── test_preprocessing.py     # Data cleaning tests
     └── conftest.py               # Pytest configuration
-\`\`\`
+```
 
 ---
 
