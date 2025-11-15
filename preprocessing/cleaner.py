@@ -16,8 +16,7 @@ class DataCleaner:
         """Clean and normalize text data."""
         if not isinstance(text, str):
             return ""
-        
-        # Remove extra whitespace and newlines
+
         text = ' '.join(text.split())
         # Remove special characters except basic punctuation
         text = re.sub(r'[^\w\s.,!?-]', ' ', text)

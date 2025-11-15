@@ -10,7 +10,7 @@ import os
 
 from chatbot.dialogue_manager import DialogueManager
 from chatbot.response_generator import ResponseGenerator
-from chatbot.intent_classifier import IntentClassifier
+from chatbot.intent_classifier import CareerCoachChatbot
 
 # Configuration du logging
 logging.basicConfig(level=logging.INFO)

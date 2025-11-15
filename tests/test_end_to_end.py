@@ -9,7 +9,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from chatbot.dialogue_manager import DialogueManager
-from chatbot.intent_classifier import IntentClassifier
+from chatbot.intent_classifier import CareerCoachChatbot
 from chatbot.response_generator import ResponseGenerator
 
 async def test_end_to_end():
@@ -19,7 +19,7 @@ async def test_end_to_end():
     
     # Initialiser les composants
     print("🔧 Initialisation des composants...")
-    intent_classifier = IntentClassifier()
+    chatbot = CareerCoachChatbot(use_gemini=True)
     response_generator = ResponseGenerator(
         os.path.join(os.path.dirname(__file__), "..", "data", "chatbot_faq.json")
     )
@@ -38,9 +38,10 @@ async def test_end_to_end():
         print(f"\n🔵 Tour de test {i}")
         print(f"👤 Message: {message}")
         
-        # Étape 1: Classification d'intention
-        intent = await intent_classifier.classify_intent(message)
-        print(f"🎯 Intention détectée: {intent.get('intent')} (confiance: {intent.get('confidence', 0):.2f})")
+        # Étape 1: Générer une réponse avec le chatbot
+        response = await chatbot.send_message(message)
+        print(f"🤖 Réponse générée: {response.response}")
+        print(f"🎯 Intention détectée: {getattr(response, 'intent', 'inconnue')} (confiance: {getattr(response, 'confidence', 0):.2f})")
         
         # Étape 2: Récupération du contexte
         context = await dialogue_manager.get_context(user_id)
@@ -48,12 +49,12 @@ async def test_end_to_end():
         # Étape 3: Génération de la réponse
         response = await response_generator.generate_response(
             message, 
-            intent.get('intent'), 
+            getattr(response, 'intent', 'General_Chat'), 
             context
         )
         
         # Afficher la réponse
-        print(f"🤖 Réponse: {response.get('response')}")
+        print(f"🤖 Réponse: {response.response}")
         
         # Étape 4: Mise à jour du contexte
         await dialogue_manager.update_context(user_id, message, response)
