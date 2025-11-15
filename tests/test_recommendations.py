@@ -1,9 +1,9 @@
 """
 # Tests for the job recommendation system
 """
+from flask import app
 import pytest
 from fastapi.testclient import TestClient
-from api.main import app
 from api.routes.recommendations import router
 
 client = TestClient(app)

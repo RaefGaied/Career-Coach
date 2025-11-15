@@ -9,7 +9,8 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
 from .config import settings
-from .routes import api_router, recommendations, analysis
+from .routes import api_router
+from .routes import recommendations, analysis, resume_match
 
 # Configuration du logging
 logging.basicConfig(level=logging.INFO)
@@ -93,8 +94,9 @@ async def root():
 # Inclure les routeurs
 app.include_router(api_router, prefix=settings.API_V1_STR)
 # Les routeurs sont déjà préfixés dans leur propre module
-app.include_router(recommendations.router, tags=["recommendations"])
-app.include_router(analysis.router, tags=["analysis"])
+app.include_router(recommendations.router, prefix=settings.API_V1_STR, tags=["recommendations"])
+app.include_router(analysis.router, prefix=settings.API_V1_STR, tags=["analysis"])
+app.include_router(resume_match.router, prefix="/api/v1/resume-match", tags=["resume-match"])
 logger.info(f"✅ API {settings.PROJECT_NAME} initialisée avec succès")
 
 if __name__ == "__main__":
