@@ -494,10 +494,170 @@ sudo systemctl start mongod
 | 1.0 | Nov 4, 2025 | Initial documentation |
 | 1.1 | Nov 4, 2025 | Added monitoring, deployment, risk management |
 | 1.2 | Nov 4, 2025 | Updated project name to SkyHire |
+| 1.3 | Nov 15, 2025 | Added Resume Job Matching API documentation |
 
 ---
 
-**Last Updated:** November 4, 2025  
-**Version:** 1.2.0  
-**Project Name:** SkyHire AI Module  
+## 🎯 Resume Job Matching API
+
+### Overview
+
+The Resume Job Matching API provides intelligent CV analysis against job descriptions using semantic similarity and keyword extraction. This module transforms the Streamlit resume matching application into a robust FastAPI service.
+
+### Features
+
+- **PDF Resume Processing**: Extract and analyze text from PDF resumes
+- **Semantic Similarity Analysis**: Use SentenceTransformer models for accurate matching
+- **Keyword Extraction**: Identify key skills and requirements
+- **Match Scoring**: Calculate fit percentage with detailed feedback
+- **CSV Report Generation**: Export analysis results for further processing
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/resume-match/` | GET | API information |
+| `/api/v1/resume-match/analyze` | POST | Analyze resume vs job description |
+| `/api/v1/resume-match/analyze/text` | POST | Test with text input |
+| `/api/v1/resume-match/download-report` | POST | Generate CSV report |
+
+### Files to Share with Development Team
+
+#### 1. **Main Router File** (Most Important)
+- **File**: `api/routes/resume_match.py`
+- **Purpose**: Contains all job matching endpoints and logic
+- **Content**: API routes, Pydantic models, helper functions
+
+#### 2. **Updated Main Application**
+- **File**: `api/main.py`
+- **Purpose**: Integrates the resume matching router
+- **Changes**: Added import and router inclusion
+
+#### 3. **Standalone Reference** (Optional)
+- **File**: `api/resume_match_api.py`
+- **Purpose**: Complete standalone version for reference
+- **Usage**: Can run independently for testing
+
+### How to Share the API
+
+#### Option 1: Git Repository (Recommended)
+```bash
+# Commit and push changes
+git add api/routes/resume_match.py api/main.py
+git commit -m "Add resume job matching API endpoints"
+git push origin main
+# Share repository URL with team lead
+```
+
+#### Option 2: File Copy
+```bash
+# Create sharing folder
+mkdir job-match-api
+# Copy essential files
+copy api\routes\resume_match.py job-match-api\
+copy api\main.py job-match-api\
+# Compress and share
+zip -r job-match-api.zip job-match-api/
+```
+
+#### Option 3: Direct File Transfer
+- Send `api/routes/resume_match.py` (primary)
+- Send updated `api/main.py`
+- Include `requirements.txt` for dependencies
+
+### Dependencies Required
+
+```bash
+pip install fastapi uvicorn PyPDF2 nltk sentence-transformers pandas
+```
+
+### How to Run the API
+
+```bash
+# Navigate to project directory
+cd ai-module
+
+# Start the server
+uvicorn api.main:app --reload --port 8000
+
+# Access documentation
+# Swagger UI: http://localhost:8000/docs
+# ReDoc: http://localhost:8000/redoc
+```
+
+### API Usage Examples
+
+#### Analyze Resume with PDF Upload
+```bash
+curl -X POST "http://localhost:8000/api/v1/resume-match/analyze" \
+  -H "Content-Type: multipart/form-data" \
+  -F "resume_file=@resume.pdf" \
+  -F "job_description=Senior Python Developer with 5+ years experience..." \
+  -F "num_keywords=10"
+```
+
+#### Test with Text Input
+```bash
+curl -X POST "http://localhost:8000/api/v1/resume-match/analyze/text" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "job_description": "Senior Python Developer with 5+ years experience...",
+    "num_keywords": 10
+  }'
+```
+
+### Response Format
+
+```json
+{
+  "match_score": 75.5,
+  "fit_level": "Good Fit",
+  "message": " Good Fit: Your CV aligns fairly well",
+  "color": "#ffa726",
+  "keyword_analysis": {
+    "present_keywords": ["python", "development", "experience"],
+    "missing_keywords": ["django", "aws", "docker"],
+    "match_percentage": 60.0
+  },
+  "resume_text": "Experienced software engineer...",
+  "job_text": "Senior Python Developer..."
+}
+```
+
+### Integration Notes for Development Team
+
+1. **File Structure**: The API follows FastAPI best practices with separate router files
+2. **Model Loading**: SentenceTransformer model loads once at startup
+3. **Error Handling**: Comprehensive error responses with proper HTTP status codes
+4. **Validation**: Pydantic models ensure request/response consistency
+5. **Performance**: Asynchronous processing for better scalability
+
+### Testing the API
+
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# API info
+curl http://localhost:8000/api/v1/resume-match/
+
+# Test endpoint (no file required)
+curl -X POST "http://localhost:8000/api/v1/resume-match/analyze/text" \
+  -H "Content-Type: application/json" \
+  -d '{"job_description": "Software engineer position requiring Python skills"}'
+```
+
+### Important Notes for Team Lead
+
+- **Primary File**: `api/routes/resume_match.py` contains all matching logic
+- **Dependencies**: Ensure all required packages are installed
+- **Model Download**: First run may download NLP models (takes ~1 minute)
+- **Port Configuration**: Default port is 8000, can be changed in uvicorn command
+- **Documentation**: Auto-generated Swagger docs available at `/docs`
+
+---
+
+**Last Updated:** November 15, 2025
+**Version:** 1.3.0
+**Project Name:** SkyHire AI Module
 **Maintainer:** Raef Ghaied
